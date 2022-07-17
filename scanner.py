@@ -4,7 +4,16 @@ import socket
 import sys
 
 def usage():
-    print( " nothing")
+    print("""
+    scanner.py: Allow you to see if an port is open on a giving server. 
+    scanner usage:
+    ./scanner.py [ip] [port]
+    ./scanner.py
+        Enter the ip  :
+        Enter the port:
+    """)
+
+    return 
 
 def get_command_line():
     try:
@@ -40,18 +49,21 @@ def tcp_connection( address ):
         
 if __name__ == "__main__":
     
-    if sys.argv[1] == "--help":
+    
+    if len(sys.argv) == 2 and sys.argv[1] == '--help':
         usage()
-
+        exit()
+    
     if address := get_command_line() :
-        if tcp_connection( address ):
+        # tcp_return 0 if the connection is possible need toswitch return in o
+        #rder to use it correctly
+        if not tcp_connection( address ):
             print( "Port is open")
         else:
             print( "port is closed")
-
     else:
         address = get_address_input()
-        if tcp_connection( address ) :
+        if not tcp_connection( address ) :
             print(" port is open" )
         else:
             print(" port is closed")
