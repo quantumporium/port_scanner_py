@@ -23,11 +23,11 @@ def get_command_line():
 
 def get_address_input():
     ip = input("Enter the ip: ")
-
     try:
         port = int(input("Enter the port: "))
     except:
-        print("error") 
+        print('this is')
+    
     return (ip, port)
 
 def tcp_connection( address ):
@@ -43,7 +43,7 @@ def tcp_connection( address ):
     
     try:
         connection = s.connect_ex( address )
-        return connection
+        return (connection, address)
     except Exception as ex:
         print( ex )
         
@@ -57,15 +57,17 @@ if __name__ == "__main__":
     if address := get_command_line() :
         # tcp_return 0 if the connection is possible need toswitch return in o
         #rder to use it correctly
-        if not tcp_connection( address ):
-            print( "Port is open")
+        socket_connection = tcp_connection( address )
+        if not socket_connection[0] :
+            print(f'[{socket_connection[1][0]}] - port {socket_connection[1][1]} is open')
         else:
-            print( "port is closed")
+            print(f'[{socket_connection[1][0]}] - port {socket_connection[1][1]} is closed')
     else:
         address = get_address_input()
-        if not tcp_connection( address ) :
-            print(" port is open" )
+        socket_connection = tcp_connection( address )
+        if not socket_connection[0] :
+            print(f'[{socket_connection[1][0]}] - port {socket_connection[1][1]} is open')
         else:
-            print(" port is closed")
+            print(f'[{socket_connection[1][0]}] - port {socket_connection[1][1]} is closed')
         
     
