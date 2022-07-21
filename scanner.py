@@ -18,15 +18,19 @@ def usage():
 def get_command_line():
     try:
         return ( sys.argv[1] , int(sys.argv[2]))
-    except:
+    except ValueError:
+        print('[FATAL] A value you enter is invalid you can retry in the interactive mode.')
         return False
 
 def get_address_input():
     ip = input("Enter the ip: ")
     try:
         port = int(input("Enter the port: "))
-    except:
-        print('this is')
+    except ValueError:
+        print("[FATAL] port need to be a number")
+        return False
+    except: 
+        print("[FATALl an fatal error occur")
     
     return (ip, port)
 
@@ -40,12 +44,17 @@ def tcp_connection( address ):
 
     """
     s = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
-    
+    error_type = socket.gaierror()
+
     try:
         connection = s.connect_ex( address )
         return (connection, address)
+    except KeyboardInterrupt :
+        print("[FATAL] You interrupt to scanning")
     except Exception as ex:
-        print( ex )
+        print("[FATAL] A fatal error occured")
+        exit(0)
+        
         
 if __name__ == "__main__":
     
@@ -64,6 +73,9 @@ if __name__ == "__main__":
             print(f'[{socket_connection[1][0]}] - port {socket_connection[1][1]} is closed')
     else:
         address = get_address_input()
+        if address == False:
+            exit() # if a fatal error happen
+
         socket_connection = tcp_connection( address )
         if not socket_connection[0] :
             print(f'[{socket_connection[1][0]}] - port {socket_connection[1][1]} is open')
