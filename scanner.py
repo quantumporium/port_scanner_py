@@ -3,6 +3,9 @@
 import socket
 import sys
 
+# to be able to catch error for socket
+from socket import gaierror
+
 def usage():
     print("""
     scanner.py: Allow you to see if an port is open on a giving server. 
@@ -13,7 +16,7 @@ def usage():
         Enter the port:
     """)
 
-    return 
+    return 'usage_function' 
 
 def get_command_line():
     try:
@@ -51,9 +54,13 @@ def tcp_connection( address ):
         return (connection, address)
     except KeyboardInterrupt :
         print("[FATAL] You interrupt to scanning")
+    except gaierror:
+        print("[FATAL] You ip/domain name address might be wrong")
+        exit()
     except Exception as ex:
-        print("[FATAL] A fatal error occured")
-        exit(0)
+        print("[FATAL] A fatal error occur")
+        exit()
+        
         
         
 if __name__ == "__main__":
